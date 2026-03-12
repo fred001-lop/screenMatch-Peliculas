@@ -57,10 +57,15 @@ public class Principal {
                 .collect(Collectors.toList());
 
         //Top 5 episodios
-        System.out.println("Top 5 episodios");
+        //Obtener los top 5 episodios
+        System.out.println("Top 5 mejores episodios");
         datosEpisodios.stream()
                 .filter(e -> !e.evaluacion().equalsIgnoreCase("N/A"))
+                .peek(e -> System.out.println("Primer Filtro N/A" + e))
                 .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
+                .peek(e -> System.out.println("Segunda ordenacion (M>m)" +e))
+                .map(e -> e.titulo().toUpperCase())
+                .peek(e -> System.out.println("Tercer Filtro Mayuscula (m>M)" +e))
                 .limit(5)
                 .forEach(System.out::println);
 
@@ -85,19 +90,14 @@ public class Principal {
 //                                "Fecha de Lanzamiento  " + e.getFechaDeLanzamiento().format(dtf)
 //                ));
 
-        //Obtener los top 5 episodios
-        System.out.println("Top 5 mejores episodios");
-        datosEpisodios.stream()
-                .filter(e -> !e.evaluacion().equalsIgnoreCase("N/A"))
-                .peek(e -> System.out.println("Primer Filtro N/A" + e))
-                .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
-                .peek(e -> System.out.println("Segunda ordenacion (M>m)" +e))
-                .map(e -> e.titulo().toUpperCase())
-                .peek(e -> System.out.println("Tercer Filtro Mayuscula (m>M)" +e))
-                .limit(5)
-                .forEach(System.out::println);
 
 
+        //Busca episodios por pedazo del titulo
+        System.out.println("Escriba el titulo del episodio que desea ver");
+        var pedazoTitulo = teclado.nextLine();
+        episodios.stream()
+                .filter(e -> e.getTitulo().contains(pedazoTitulo))
+                .findFirst();
     }
 
 
