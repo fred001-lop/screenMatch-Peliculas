@@ -69,7 +69,7 @@ public class Principal {
                 .flatMap(t -> t.episodios().stream()
                         .map(d -> new Episodio(t.numero(),d)))
                 .collect(Collectors.toList());
-        episodios.forEach(System.out::println);
+        //episodios.forEach(System.out::println);
 
         //Busqueda de episodios apartir de x ano
         System.out.println("Por favor indica el año a partir del cual deseas ver el episodio");
@@ -77,13 +77,27 @@ public class Principal {
         teclado.nextLine();
         LocalDate fechaBusqueda = LocalDate.of(fecha, 1, 1);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        episodios.stream()
-                .filter(e -> e.getFechaDeLanzamiento() != null && e.getFechaDeLanzamiento().isAfter(fechaBusqueda))
-                .forEach(e -> System.out.println(
-                        "Temporada " + e.getTemporada()  +
-                                "Episodio " + e.getTitulo() +
-                                "Fecha de Lanzamiento  " + e.getFechaDeLanzamiento().format(dtf)
-                ));
+//        episodios.stream()
+//                .filter(e -> e.getFechaDeLanzamiento() != null && e.getFechaDeLanzamiento().isAfter(fechaBusqueda))
+//                .forEach(e -> System.out.println(
+//                        "Temporada " + e.getTemporada()  +
+//                                "Episodio " + e.getTitulo() +
+//                                "Fecha de Lanzamiento  " + e.getFechaDeLanzamiento().format(dtf)
+//                ));
+
+        //Obtener los top 5 episodios
+        System.out.println("Top 5 mejores episodios");
+        datosEpisodios.stream()
+                .filter(e -> !e.evaluacion().equalsIgnoreCase("N/A"))
+                .peek(e -> System.out.println("Primer Filtro N/A" + e))
+                .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
+                .peek(e -> System.out.println("Segunda ordenacion (M>m)" +e))
+                .map(e -> e.titulo().toUpperCase())
+                .peek(e -> System.out.println("Tercer Filtro Mayuscula (m>M)" +e))
+                .limit(5)
+                .forEach(System.out::println);
+
+
     }
 
 
